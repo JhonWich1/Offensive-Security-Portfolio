@@ -1,0 +1,34 @@
+# ==========================================
+# .gitignore para Laboratorio Ofensivo
+# ==========================================
+
+# 1. Archivos temporales de Neovim/Vim
+*.swp
+*~
+.*.sw[a-z]
+*.un~
+
+# 2. Binarios y Ejecutables (VulnHub / Exploits)
+*.exe
+*.out
+*.bin
+*.elf
+*.dll
+# Ignorar binarios sin extensión
+!*.*
+!*/
+
+# 3. Archivos pesados de escaneo (Logs temporales)
+*.pcap
+*.cap
+*.log
+
+# 4. Diccionarios / Wordlists
+*.txt.gz
+*.lst
+rockyou.txt
+dirb_*.txt
+
+# 5. Archivos del Sistema Operativo
+.DS_Store
+Thumbs.db
