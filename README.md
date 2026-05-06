@@ -16,7 +16,7 @@ Este repositorio es un laboratorio documentado de **Seguridad Ofensiva**. Su obj
 
 | Directorio | Contenido | Finalidad |
 | :--- | :--- | :--- |
-| **`/vulnhub`** | Writeups de máquinas (ej. **IMF**) | Documentar el paso a paso de la resolución. |
+| **`/machines`** | Writeups de máquinas (ej. **IMF**) | Documentar el paso a paso de la resolución. |
 | **`/scripts`** | Exploits y herramientas de automatización | Almacenar código como scripts de Port Knocking o Fuzzers. |
 | **`/methodologies`** | Guías de procesos (Cheatsheets) | Estandarizar mi flujo de trabajo en enumeración y escalada. |
 | **`/assets`** | Capturas de pantalla y evidencia | Respaldar técnicamente los hallazgos documentados. |
