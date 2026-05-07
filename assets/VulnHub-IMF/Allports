@@ -1,0 +1,5 @@
+# Nmap 7.95 scan initiated Wed May  6 17:33:36 2026 as: nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn -oG Allports 192.168.18.254
+# Ports scanned: TCP(65535;1-65535) UDP(0;) SCTP(0;) PROTOCOLS(0;)
+Host: 192.168.18.254 ()	Status: Up
+Host: 192.168.18.254 ()	Ports: 80/open/tcp//http///	Ignored State: filtered (65534)
+# Nmap done at Wed May  6 17:34:15 2026 -- 1 IP address (1 host up) scanned in 39.82 seconds

@@ -1,0 +1,12 @@
+# Nmap 7.95 scan initiated Wed May  6 18:04:43 2026 as: nmap -sCV -p80 -oN target 192.168.18.254
+Nmap scan report for 192.168.18.254
+Host is up (0.035s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+|_http-title: IMF - Homepage
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+MAC Address: 58:1C:F8:03:46:9D (Intel Corporate)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Wed May  6 18:04:55 2026 -- 1 IP address (1 host up) scanned in 11.65 seconds
