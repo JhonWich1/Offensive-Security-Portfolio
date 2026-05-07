@@ -1,8 +1,8 @@
 # 🚩 VulnHub-IMF
 
 **Estado**: 🛠️ En Progreso | ⚖️ Dificultad: [Nivel]
-**IP Objetivo**: 0.0.0.0
-**SO**: Linux / Windows
+**IP Objetivo**: 192.168.18.254
+**SO**: Linux 
 
 ---
 
@@ -16,7 +16,9 @@
 ## 📑 Metodología de Resolución
 
 ### 1. Reconocimiento (Recon)
-> Documentación de puertos y servicios con Nmap.
+> Documentación de puertos y servicios con Nmap
+Una vez identificada la IP de la maquina víctima podemos utilizar comandos de reconocimiento con Nmap
+Con el comando ```bash nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 192.168.18.254 -oG Allports ``` obtenemos los puertos abiertos y exportamos el resultado al archivo "Allports" descubriendo que solo existe el puerto 80 abierto lo que significa que se trata de una pagina web. Se aplico el comando de reconocimiento ```bash nmap -sCV -p80 192.168.18.254 -oN target``` el cual nos devolvio la información de que se trata de un servicio http con apache/2.4.18. Por lo que ahora pasaremos a el reconocimiento de la página web.
 *   
 
 ### 2. Análisis de Vulnerabilidades
