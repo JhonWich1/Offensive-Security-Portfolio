@@ -1,6 +1,6 @@
 # 🚩 VulnHub-IMF
 
-**Estado**: 🛠️ En Progreso | ⚖️ Dificultad: [MEDIA]
+**Estado**: 🛠️ Finalizada | ⚖️ Dificultad: [MEDIA]
 **IP Objetivo**: 192.168.18.156
 **SO**: Linux 
 
@@ -16,13 +16,13 @@
 ## 📑 Metodología de Resolución
 
 ### 1. Reconocimiento (Recon)
-Una vez identificada la IP de la máquina víctima (`192.168.18.254`), iniciamos la fase de enumeración para identificar vectores de entrada.
+Una vez identificada la IP de la máquina víctima (`192.168.18.156`), iniciamos la fase de enumeración para identificar vectores de entrada.
 
 **Escaneo de puertos abiertos:**
 Utilizamos `nmap` para un escaneo rápido de todo el rango de puertos (65535), priorizando la velocidad y exportando el resultado en formato *grepeable*:
 
 ```bash
-nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 192.168.18.254 -oG AllPorts
+nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 192.168.18.156 -oG AllPorts
 ```
 
 * **Resultado**: Solo se detectó el **puerto 80** abierto, sugiriendo la presencia de un servicio web.
@@ -31,7 +31,7 @@ nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 192.168.18.254 -oG AllPorts
 Realizamos un escaneo profundo sobre el puerto identificado para obtener detalles del servicio y ejecutar scripts básicos de reconocimiento:
 
 ```bash
-nmap -sCV -p80 192.168.18.254 -oN target
+nmap -sCV -p80 192.168.18.156 -oN target
 ```
 
 * **Hallazgo**: El servicio es **HTTP** corriendo sobre **Apache/2.4.18**.
@@ -83,14 +83,62 @@ Como se trata de una página web podemos hacer **URL enumeration** con la herram
     ![Reverse-shell](../../assets/VulnHub-IMF/07-reverse-shell.png)
 ### 4. Post-Explotación
 > Enumeración interna y escalada de privilegios a Root.
-*   
+* Bandera 5 
+La bandera nos da la pista de agentservices por lo que dentro de la maquina podemos servicios o programas con el nombre de agent, aunque la maquina sea vulnerale a CVE-2021-4034 se usara la vulnerabilidad que fue dada, asi que siguiendo la logica con el comando:
+```bash
+    find / -name "agent"
+```
+podemos encontrar que hay un programa llamado agent que puede ser ejecutado el cual nos pide un ID para poder seguir avanzando, ademas de encontrar un archivo llamado control access, el cual nos dara una serie de puertos **SYN 7482,8279,9467** los cuales si aplicamos Port Knocking podemos descubrir algo, al hacerlo obtenemos lo siguiente:
+![Port Knocking](../../assets/VulnHub-IMF/09-Knock.png)
+*(Descubrimiento de puerto 7788 en donde se corre el programa agent)*
+Teniendo en cuenta podemos observar que el puerto **7788** esta corriendo el programa por lo que si podemos hallar la forma de hacer bufferOverflow nos puede entregar una shell con privilegios root. 
+
+Con el comando **ltrace** podemos ver que el ID es ***48093572*** y que se esta usando strncmp por lo que es posible un bufferOverflow.
+
+Se creo el script ../../scripts/VulnHub-IMF/BufferOverflow-Reverse-Shell.py el cual hace uso de shellcodes para entablar una conexión remota por el peurto 443, por lo que al ejecutar obtenemos nuestra shell.
+
+![THE END](../../assets/VulnHub-IMF/10-TheEnd.png)
+*(MMaquina IMF completada ultima bandera Gh0stProt0c0ls)*
 
 ### 5. Reporte y Mitigación
 > Propuestas de endurecimiento (Hardening) del sistema.
-*   
+1. Endurecimiento del servicio web
 
----
+### 1.1 Restringir carga de archivos
+
+Durante la explotación se abusó de una funcionalidad de subida de archivos para cargar un archivo con doble extensión o contenido malicioso. Para mitigar esto:
+
+- Validar extensiones permitidas mediante lista blanca.
+- Validar el tipo MIME real del archivo.
+- Verificar la firma mágica del archivo.
+- Renombrar archivos subidos con nombres aleatorios seguros.
+- Almacenar archivos subidos fuera del directorio web público.
+- Impedir la ejecución de scripts dentro del directorio de uploads.
+
+Ejemplo para Apache:
+```apache
+<Directory /var/www/html/imfadministrator/uploads>
+    php_admin_flag engine off
+    Options -ExecCGI
+    RemoveHandler .php .phtml .php3 .php4 .php5 .phar
+    RemoveType .php .phtml .php3 .php4 .php5 .phar
+</Directory>
+<FilesMatch "\.(php|phtml|php3|php4|php5|phar)$">
+    Require all denied
+</FilesMatch>
+```
+2. Separación de privilegios
+
+El servicio web se ejecutaba como www-data, lo cual es normal, pero ese usuario pudo interactuar con rutas y binarios sensibles.
+
+Recomendaciones:
+
+Mantener www-data sin acceso a directorios fuera de /var/www.
+Evitar que www-data pueda leer archivos sensibles.
+Usar permisos mínimos en archivos web.
+Separar usuarios por servicio.
+No ejecutar servicios internos con privilegios elevados si no es necesario.
 
 ## 📂 Archivos Relacionados
-*   **Scripts**: [Enlace a scripts/VulnHub-IMF]
-*   **Evidencia**: [Enlace a assets/VulnHub-IMF]
+*   **Scripts**: [../../scripts/]
+*   **Evidencia**: [../../assets/]
