@@ -65,7 +65,7 @@ Como se trata de una página web podemos hacer **URL enumeration** con la herram
     ![Type-Juggling](../../assets/VulnHub-IMF/03-TypeJuggling-Bypass.png)
     *(Bypass usando Type-Juggling)*
 * Obtención de información usando SQL Injection mediante la URL
-    Al entrar al panel principal podemos observar en la URL *pagename* lo cual nos permite inferir que podemos hacer un LFI, RFI o SQL inyection, por lo que al probar veremos que solo es posible la tercera opción, cada vez que hacemos una comparación la página devuelve **Welcome to the IMF administrator** por lo que si iteramos sobre diferentes caracteres y la respuesta es otra, podemos obtener información de manera ciega. Por lo que se debe crear un script para poder obtener la información --> ![script](../../scripts/VulnHub-IMF/Boolean-Based-blind.py) como resultado obtendremos la siguiente información.
+    Al entrar al panel principal podemos observar en la URL *pagename* lo cual nos permite inferir que podemos hacer un LFI, RFI o SQL inyection, por lo que al probar veremos que solo es posible la tercera opción, cada vez que hacemos una comparación la página devuelve **Welcome to the IMF administrator** por lo que si iteramos sobre diferentes caracteres y la respuesta es otra, podemos obtener información de manera ciega. Por lo que se debe crear un script para poder obtener la información --> ![Boolean-Based-blind](../../scripts/VulnHub-IMF/Boolean-Based-blind.py) como resultado obtendremos la siguiente información.
     ![Boolean-Based-blind](../../assets/VulnHub-IMF/04-Blind-SQL-Inyection.png)
     *información obtenida*
     esto es importante ya que si buscamos la imagen dentro de la página veremos que hay un código qr el cual contiene la siguiente información
@@ -95,7 +95,7 @@ Teniendo en cuenta podemos observar que el puerto **7788** esta corriendo el pro
 
 Con el comando **ltrace** podemos ver que el ID es ***48093572*** y que se esta usando strncmp por lo que es posible un bufferOverflow.
 
-Se creo el script ../../scripts/VulnHub-IMF/BufferOverflow-Reverse-Shell.py el cual hace uso de shellcodes para entablar una conexión remota por el peurto 443, por lo que al ejecutar obtenemos nuestra shell.
+Se creo el script ![BufferOverflow-Reverse-Shell.py](../../scripts/VulnHub-IMF/BufferOverflow-Reverse-Shell.py) el cual hace uso de shellcodes para entablar una conexión remota por el peurto 443, por lo que al ejecutar obtenemos nuestra shell.
 
 ![THE END](../../assets/VulnHub-IMF/10-TheEnd.png)
 *(MMaquina IMF completada ultima bandera Gh0stProt0c0ls)*
@@ -140,5 +140,5 @@ Separar usuarios por servicio.
 No ejecutar servicios internos con privilegios elevados si no es necesario.
 
 ## 📂 Archivos Relacionados
-*   **Scripts**: [../../scripts/]
-*   **Evidencia**: [../../assets/]
+*   **Scripts**: [SCRIPTS](../../scripts/)
+*   **Evidencia**: [ASSETS](../../assets/)
